@@ -12,8 +12,10 @@ import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -70,6 +72,18 @@ public class MainActivity extends AppCompatActivity {
                 setWord();
             }
         });
+
+        txtWaitTime.addTextChangedListener( new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                saveSpeed();
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }}
+        );
 
         txtFullText.setText(getClipboardText()); //keep function to get clipboard content!
         txtWord.setHint("Press play to read");
