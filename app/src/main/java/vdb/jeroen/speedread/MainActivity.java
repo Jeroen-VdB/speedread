@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
@@ -114,6 +115,9 @@ public class MainActivity extends AppCompatActivity {
                 m_handler.postDelayed(m_handlerTask, Integer.parseInt(txtWaitTime.getText().toString()));
             }
         };
+
+        //TODO Add copy function for chrome
+        Toast.makeText(this, "Copying from chrome is currently unavailable", Toast.LENGTH_SHORT).show();
     }
 
     /**
