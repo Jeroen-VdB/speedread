@@ -100,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
         m_handlerTask = new Runnable() {
             @Override
             public void run() {
+                if (words == null)
+                    return;
+
                 if (position < words.length){
                     colorStartBtn();
                     setWord();
@@ -133,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
      * @throws InterruptedException
      */
     public void pause(View v) throws InterruptedException {
+        if (words == null)
+            return;
+
         if (position > 0 && isReading) {
             position--;
         }
@@ -159,6 +165,9 @@ public class MainActivity extends AppCompatActivity {
      * @param v
      */
     public void prevWord(View v){
+        if (words == null)
+            return;
+
         if (position > 0){
             position--;
             setWord();
@@ -170,10 +179,10 @@ public class MainActivity extends AppCompatActivity {
      * @param v
      */
     public void nextWord(View v){
-        if (position < words.length - 1){
+        if (words != null && position < words.length - 1){
             position++;
             setWord();
-        } else {
+        } else if (words != null){
             colorStopBtn();
         }
     }
