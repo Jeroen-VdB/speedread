@@ -94,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
                     colorStopBtn();
                 }
 
-
-
                 m_handler.postDelayed(m_handlerTask, Integer.parseInt(txtWaitTime.getText().toString()));
             }
         };
@@ -173,10 +171,10 @@ public class MainActivity extends AppCompatActivity {
     public String getClipboardText(){
         if (!(clipboard.hasPrimaryClip())) {
             //Clipboard is empty
-            return "";
+            return "Oops! Something went wrong while copying text";
         } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
             // clipboard doesn't contain plain text
-            return "";
+            return "Oops! Something went wrong while copying text";
         } else {
             //since the clipboard contains plain text.
             ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
