@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnStop;
     private final int BLUE_COLOR = Color.argb(255, 30, 126, 229);
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Add layout and setup the variables
