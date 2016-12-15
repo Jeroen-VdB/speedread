@@ -153,6 +153,9 @@ public class MainActivity extends AppCompatActivity {
      * @throws InterruptedException
      */
     public void stop(View v) throws InterruptedException {
+        if (words == null)
+            return;
+
         m_handler.removeCallbacks(m_handlerTask);
         isReading = false;
         position = 0;
