@@ -216,6 +216,10 @@ public class MainActivity extends AppCompatActivity {
     public void setWord(){
         Spannable word;
 
+        if (words == null){
+            return;
+        }
+
         if (words[position].length() % 2 != 0){
             word = new SpannableString(words[position]);
         } else {
