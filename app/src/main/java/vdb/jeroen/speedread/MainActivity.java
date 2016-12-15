@@ -190,15 +190,23 @@ public class MainActivity extends AppCompatActivity {
             // clipboard doesn't contain plain text
             return "Oops! Something went wrong while copying text";
         } else {
-            //since the clipboard contains plain text.
-            ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-            String text = item.getText().toString();
-
-            fullText = text;
-            words = text.split("\\s+");
-
             // Gets the clipboard as text.
-            return fullText;
+            ClipData data = clipboard.getPrimaryClip();
+
+            if (data.getItemCount() > 0)
+            {
+                ClipData.Item item = data.getItemAt(0);
+                if (item != null)
+                {
+                    //String text = item.getText().toString();
+                    String text = data.getItemAt(0).coerceToText(this).toString();
+                    fullText = text;
+                    words = text.split("\\s+");
+                    return fullText;
+                }
+            }
+            words = null;
+            return "Oops! Something went wrong while copying text";
         }
     }
 
