@@ -116,7 +116,13 @@ public class MainActivity extends AppCompatActivity {
                     colorStopBtn();
                 }
 
-                m_handler.postDelayed(m_handlerTask, Integer.parseInt(txtWaitTime.getText().toString()));
+                //Extra delay when ending with a punctuation
+                if (position > 0 && words[position - 1].matches(".*\\p{Punct}")){
+                    m_handler.postDelayed(m_handlerTask, Integer.parseInt(txtWaitTime.getText().toString()) + Integer.parseInt(txtWaitTime.getText().toString()) / 2);
+                } else {
+                    m_handler.postDelayed(m_handlerTask, Integer.parseInt(txtWaitTime.getText().toString()));
+                }
+
             }
         };
     }
