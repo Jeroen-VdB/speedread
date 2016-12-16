@@ -282,7 +282,12 @@ public class MainActivity extends AppCompatActivity {
      * @param v
      */
     public void speedUp(View v){
-        int more = Integer.parseInt(txtWaitTime.getText().toString()) + 100;
+        int more = Integer.parseInt(txtWaitTime.getText().toString()) + 50;
+
+        if (Integer.parseInt(txtWaitTime.getText().toString()) % 50 != 0){
+            more = Integer.parseInt(txtWaitTime.getText().toString()) - Integer.parseInt(txtWaitTime.getText().toString()) % 50 + 50;
+        }
+
         txtWaitTime.setText(String.valueOf(more));
 
         m_handler.removeCallbacks(m_handlerTask);
@@ -299,10 +304,14 @@ public class MainActivity extends AppCompatActivity {
      * @param v
      */
     public void speedDown(View v){
-        if(Integer.parseInt(txtWaitTime.getText().toString()) <= 100)
+        if(Integer.parseInt(txtWaitTime.getText().toString()) <= 50)
             return;
 
-        int less = Integer.parseInt(txtWaitTime.getText().toString()) - 100;
+        int less = Integer.parseInt(txtWaitTime.getText().toString()) - 50;
+
+        if (Integer.parseInt(txtWaitTime.getText().toString()) % 50 != 0){
+            less = Integer.parseInt(txtWaitTime.getText().toString()) + (50 - Integer.parseInt(txtWaitTime.getText().toString()) % 50) - 50;
+        }
 
         txtWaitTime.setText(String.valueOf(less));
 
