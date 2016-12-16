@@ -2,12 +2,15 @@ package vdb.jeroen.speedread;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnPause;
     private ImageButton btnStop;
     private final int BLUE_COLOR = Color.argb(255, 30, 126, 229);
+    public static final String MIME_TYPE_CONTACT = "vnd.android.cursor.item/vnd.example.contact";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,9 +119,6 @@ public class MainActivity extends AppCompatActivity {
                 m_handler.postDelayed(m_handlerTask, Integer.parseInt(txtWaitTime.getText().toString()));
             }
         };
-
-        //TODO Add copy function for chrome
-        Toast.makeText(this, "Copying from chrome is currently unavailable", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -195,16 +196,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Check the context of the clipboard. Incase it's plain text split the string and put it in the words array
+     * Check the context of the clipboard. Incase text split the string and put it in the words array
      * @return String
      */
     public String getClipboardText(){
+        ContentResolver cr = getContentResolver();
+
         if (!(clipboard.hasPrimaryClip())) {
             //Clipboard is empty
             return "Oops! Something went wrong while copying text";
-        } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
+        /*} else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
             // clipboard doesn't contain plain text
-            return "Oops! Something went wrong while copying text";
+            return "Oops! Something went wrong while copying text";*/
         } else {
             // Gets the clipboard as text.
             ClipData data = clipboard.getPrimaryClip();
@@ -212,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
             if (data.getItemCount() > 0)
             {
                 ClipData.Item item = data.getItemAt(0);
+                //When the clipdate is plain text item won't be null
                 if (item != null)
                 {
                     //String text = item.getText().toString();
@@ -219,6 +223,28 @@ public class MainActivity extends AppCompatActivity {
                     fullText = text;
                     words = text.split("\\s+");
                     return fullText;
+                //If the item is complex text convert it to a string
+                } else {
+                    Uri pasteUri = item.getUri();
+                    if (pasteUri != null) {
+                        String uriMimeType = cr.getType(pasteUri);
+                        // Does the content provider offer a MIME type that the current application can use?
+                        if (uriMimeType.equals(MIME_TYPE_CONTACT)) {
+
+                            // Get the data from the content provider.
+                            Cursor pasteCursor = cr.query(pasteUri, null, null, null, null);
+
+                            // If the Cursor contains data, move to the first record
+                            if (pasteCursor != null) {
+                                if (pasteCursor.moveToFirst()) {
+                                    fullText = pasteCursor.getString(0);
+                                    return fullText;
+                                }
+                            }
+                            // close the Cursor
+                            pasteCursor.close();
+                        }
+                    }
                 }
             }
             words = null;
